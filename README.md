@@ -15,6 +15,7 @@ You could check if [bowie.casinoman.app](https://bowie.casinoman.app) is up (ver
 
 ### login/register screen
 ![pre auth screen login/register](https://raw.githubusercontent.com/ryan-west-casino/bowie-media/main/bowie-preauth-guest.png)
+*more images @ [me.casinoman.app](https://me.casinoman.app) or at [ryan-west-casino/bowie-media](https://github.com/ryan-west-casino/bowie-media)*
 
 ## Casino Features
 Has 2 inhouse games which really are filler games, external game is an example available (but obviously you would need to build in your api).
