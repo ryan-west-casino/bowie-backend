@@ -6,7 +6,15 @@ This is an app I've developed from scratch utilizing Lumen (backend), React/Next
 
 This repository contains the backend. For frontend check other repository. Get app run in 1 command on Docker.
 
-App will be under development just to learn more about Frontend while I look for job/next challenge, see [my personal project page](https://me.casinoman.app).
+## Demo
+You could check if [bowie.casinoman.app](https://bowie.casinoman.app) is up (vercel.com hosted frontend connected to this backend code in middleware), to give impression:
+
+### screen recordings:
+- [bowie app - three in a row game & theme selection](https://www.youtube.com/watch?v=6ICsFWHlw3A)
+- [bowie app - rock paper scissors game](https://www.youtube.com/watch?v=yIDjlCI9L0c)
+
+### login/register screen
+![pre auth screen login/register](https://raw.githubusercontent.com/ryan-west-casino/bowie-media/main/bowie-preauth-guest.png)
 
 ## Casino Features
 Has 2 inhouse games which really are filler games, external game is an example available (but obviously you would need to build in your api).
