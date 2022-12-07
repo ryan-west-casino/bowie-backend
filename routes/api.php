@@ -10,4 +10,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('auth/balance', ['as' => 'auth.balance', 'uses' => 'AuthController@balance']);
     $router->post('auth/register', ['as' => 'auth.register', 'uses' => 'AuthController@register']);
     $router->post('auth/logout', ['as' => 'auth.logout', 'uses' => 'AuthController@logout']);
+    $router->get('auth/login-cli', ['as' => 'auth.login-cli', 'uses' => 'AuthController@loginWithCli']);
+});
+
+
+$router->get('/api/cli/config', function () use ($router) {
+
+
 });

@@ -12,7 +12,7 @@ return new class extends Migration
             $table->integer('gbp')->default(0)->after('name');
             $table->integer('usd')->default(0)->after('name');
             $table->integer('eur')->default(0)->after('name');
-            $table->boolean('is_admin')->default(0)->after('name');
+            $table->integer('level')->default(0)->after('name');
         });
     }
     /**

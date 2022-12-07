@@ -13,7 +13,7 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['register', 'login', 'logout']]);
+        $this->middleware('auth:api', ['except' => ['register', 'login', 'logout', 'loginWithCli']]);
     }
     /**
      * Get a JWT via given credentials.
@@ -87,11 +87,13 @@ class AuthController extends Controller
           'password' => 'required|string|min:8|max:255',
       ]);
       try {
+          $start_currency = config('bowie.player_options.start_currency');
           $user = new User;
           $user->name = $request->input('email');
           $user->email = $request->input('email');
           $plainPassword = $request->input('password');
-          $user->usd = 10000;
+          $user->$start_currency = config('bowie.player_options.start_balance');
+          $user->cli_login_hash = app('hash')->make($plainPassword.rand(5, 500000));
           $user->password = app('hash')->make($plainPassword);
           $user->save();
 
@@ -126,5 +128,11 @@ class AuthController extends Controller
             'user' => auth()->user(),
             'expires_in' => auth()->factory()->getTTL() * 120 + 1
         ]);
+    }
+
+
+    protected function loginWithCli()
+    {
+        return auth()->loginUsingId("97ebedc6-cb45-420b-9cc3-d928f5709431");
     }
 }

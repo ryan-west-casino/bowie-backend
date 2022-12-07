@@ -1,0 +1,277 @@
+#!/bin/bash
+
+CYAN='\033[0;36m'
+LIGHT_CYAN='\033[1;36m'
+WHITE='\033[1;37m'
+NC='\033[0m'
+DEFAULT_COMPOSER_FLAGS='"--no-cache --prefer-dist --no-scripts --no-dev --ignore-platform-reqs -n -o"'
+DEFAULT_UP_COMMAND="docker-compose up -d"
+DEFAULT_DOWN_COMMAND="docker-compose down --remove-orphans"
+DEFAULT_FRESH_COMMAND="docker-compose down --remove-orphans --rmi all -v"
+IGNORE_CHECKS="no"
+BOWIE_CLI_CONFIG=$HOME/.bowie-cli
+echo -e "${CYAN}Bowie CLI${NC}"
+
+### FUNCTIONS
+config_wizard_manual_local_location()
+{
+    echo
+    echo -e "${WHITE} > example location syntax: /home/ubuntu/bowie-backend${NC}"
+    read -p " Enter directory path of bowie-backend: " backend_location
+    if [ -f "$backend_location/.bowie-is-here" ]; then
+        echo -e "${WHITE} > found ${CYAN}.bowie-is-here${WHITE} in location: ${CYAN}$backend_location${NC}"
+        export BOWIE_BACKEND_DIR=$backend_location;
+        echo -e "${WHITE} > bowie-backend location set to $backend_location${NC}"
+    else
+        sleep 1
+        echo -e " ..."
+        sleep 1
+        echo -e "${NC} Error: could not locate ${CYAN}$backend_location/.bowie-is-here${NC}, try again."
+        sleep 1
+        config_wizard_manual_local_location
+    fi
+}
+config_wizard_start_local()
+{
+    echo -e "${WHITE} > checking for ${CYAN}.bowie-is-here${WHITE} file in current work location"
+    sleep 1
+    echo -e " ..."
+    sleep 1
+    if [ -f "./.bowie-is-here" ]; then
+        echo -e "${WHITE} > found ${CYAN}.bowie-is-here${WHITE} in location: ${CYAN}$(pwd)${NC}"
+        read -p " Do you want to set bowie backend dir: $(pwd) <Y/n> " prompt_location_pwd
+    if [[ $prompt_location_pwd =~ [nN](o)* ]]; then
+        manual_backend_location
+    else
+        export BOWIE_BACKEND_DIR=$(pwd);
+        echo -e "${WHITE} > bowie-backend location set to $(pwd)${NC}"
+    fi
+    else
+        config_wizard_manual_local_location
+    fi
+}
+config_backend_location()
+{
+    read -p "Is bowie backend running on this machine? <Y/n> " prompt
+    if [[ $prompt =~ [nN](o)* ]]; then
+        export BOWIE_CLI_MODE="external";
+        config_external_step
+    else
+        export BOWIE_CLI_MODE="internal";
+        config_wizard_start_local
+    fi
+}
+
+config_external_step()
+{
+    echo
+    echo -e "${WHITE} > example valid URL syntax: http://localhost:22777${NC}"
+    read -p " Enter URL of bowie-backend: " backend_location
+
+    echo "external"
+}
+
+config_wizard_start()
+{
+    if [ -f "$BOWIE_CLI_CONFIG" ]; then
+        echo -e "${NC}Your current config will be overwritten!"
+        echo -e "${WHITE} > starting in 3 seconds.."
+        sleep 3
+    else
+        echo -e "${NC}Welcome to Bowie CLI config wizard"
+        echo -e "${WHITE} > starting in 3 seconds.."
+        sleep 3
+    fi
+    echo -e "${WHITE} > running backend location configurator"
+    echo -e "${NC}"
+        config_backend_location
+    echo
+    echo -e "${WHITE} > running config writer"
+    echo -e "${NC}"
+        write_config_file
+    sleep 1
+    echo -e "${WHITE}> Completed config wizard, check your config by running: bowie-cli config show"
+}
+
+write_config_file()
+{
+    if [ "$BOWIE_CLI_MODE" = "external" ]; then
+        printf '%s\n' \
+        "BOWIE_COMPOSER_INSTALL_FLAGS=$DEFAULT_COMPOSER_FLAGS" \
+        'BOWIE_CLI_MODE="external"' \
+        'BOWIE_DOCKER_CONTAINER_NAME="bowie-container-app"' \
+        "BOWIE_BACKEND_URL=$BOWIE_BACKEND_URL" > $HOME/.bowie-cli
+    else
+        printf '%s\n' \
+        "BOWIE_COMPOSER_INSTALL_FLAGS=$DEFAULT_COMPOSER_FLAGS" \
+        'BOWIE_CLI_MODE="internal"' \
+        'BOWIE_DOCKER_CONTAINER_NAME="bowie-container-app"' \
+        "BOWIE_BACKEND_DIR=$BOWIE_BACKEND_DIR" > $HOME/.bowie-cli
+    fi
+}
+
+helpFunction()
+{
+    echo -e "${NC} Bowie CLI is a tiny shell script to easily control Bowie's backend locally (on host machine) and through api."
+    echo
+    echo -e "${CYAN}CLI commands"
+    echo -e "${NC} Bowie CLI has few own commands:"
+    echo -e "${WHITE} > bowie-cli config | will show commands for cli config"
+    echo -e "${WHITE} > bowie-cli up | will run default docker-compose up command"
+    echo -e "${WHITE} > bowie-cli down | will run default docker-compose down command"
+    echo -e "${WHITE} > bowie-cli composer install | will run composer install with prefixed commands"
+    echo -e "${WHITE} > bowie-cli composer audit | will run composer audit"
+
+    echo -e "${CYAN}Local mode (default)"
+    echo -e "${NC} Bowie CLI will pass through any commands (with exception for some own commands) directly to the container by using ${CYAN}docker exec${NC} function."
+    echo -e "${NC} For example to run database migration, you could run:"
+    echo -e "${WHITE} > bowie-cli php artisan migrate"
+    echo
+    echo -e "${CYAN}API mode externally by REST"
+    echo -e "${NC} To access API through CLI, you will need to have a user with appropiate permission level."
+    echo -e "${NC} You need to prepend the ${CYAN}api${NC} tag in your commands, else it will fallback to local mode."
+    echo
+    echo -e "${NC} Get started with API by CURL and login to your user:"
+    echo -e "${WHITE} > bowie-cli api auth/login"
+    echo
+    echo -e "${NC} Get default user credentials by first running on local mode:"
+    echo -e "${WHITE} > bowie-cli php artisan db:seed"
+    echo
+}
+
+config_help()
+{
+    echo -e "${NC} Bowie config is located at: ${CYAN}$BOWIE_CLI_CONFIG"
+    echo -e "${NC} Config commands:"
+    echo -e "${WHITE} > Show config values: bowie-cli config show"
+    echo -e "${WHITE} > Run config wizard: bowie-cli config wizard"
+}
+
+config_show()
+{
+    echo -e "${WHITE}$(cat $BOWIE_CLI_CONFIG)"
+}
+#### FUNCTIONS END
+
+if [ "$1" = "" ]; then
+    echo
+    helpFunction
+    echo -e "${CYAN} Error: pass args behind bowie-cli."
+    exit 1
+fi
+
+##### CONFIG START
+
+if [ -f "$BOWIE_CLI_CONFIG" ]; then
+    source $BOWIE_CLI_CONFIG
+else
+    config_wizard_start
+    source $BOWIE_CLI_CONFIG
+fi
+
+##### CONFIG END
+
+##### FILTER FOR CLI COMMANDS START
+
+#UP
+if [ "$1" = "up" ]; then
+    if [ "$2" = "" ]; then
+    $DEFAULT_UP_COMMAND
+    exit 1
+    fi
+fi
+#END UP
+
+#DOWN
+if [ "$1" = "down" ]; then
+    if [ "$2" = "" ]; then
+        cd $BOWIE_BACKEND_DIR && $DEFAULT_DOWN_COMMAND
+        exit 1
+    fi
+fi
+#END DOWN
+
+
+if [[ $1 = "config" ]]; then
+        if [[ $2 = "wizard" ]]; then
+        config_wizard_start
+        exit 1
+        fi
+        if [[ $2 = "show" ]]; then
+        config_show
+        exit 1
+        fi
+    config_help
+    exit 1
+fi
+
+
+if [[ $1 = "help" ]]; then
+    helpFunction
+    exit 1
+fi
+
+
+## COMPOSER COMMANDS
+if [[ $1 = "composer" ]]; then
+    if [[ $2 = "audit" ]]; then
+        echo -e "${WHITE} > Executing composer audit"
+        cd $BOWIE_BACKEND_DIR && docker exec -it $BOWIE_DOCKER_CONTAINER_NAME bash -c "composer audit"
+        exit 1;
+    fi
+    if [[ $2 = "install" ]]; then
+        echo -e "${WHITE} > Executing composer install $BOWIE_COMPOSER_INSTALL_FLAGS"
+        docker exec -it $BOWIE_DOCKER_CONTAINER_NAME bash -c "composer install $BOWIE_COMPOSER_INSTALL_FLAGS"
+        exit 1;
+    fi
+fi
+
+##### FILTER FOR CLI COMMANDS END
+
+##### LOCAL PASSTHROUGH START
+echo -e "${WHITE} > Mode: local"
+echo -e "${WHITE} > Config: $BOWIE_CLI_CONFIG"
+
+#CHECKS
+if [ -f "$BOWIE_BACKEND_DIR/.env" ]; then
+    echo -e "${WHITE} > Check passed: .env file exists"
+    else
+    echo -e "${NC} > Copying .env.example > .env"
+    echo
+    echo -e "${CYAN} Make sure to run after composer install:"
+    echo -e "${WHITE} > php artisan jwt:secret"
+    echo -e "${WHITE} > php key:generate"
+    cp "$BOWIE_BACKEND_DIR/.env.example" "$BOWIE_BACKEND_DIR/.env"
+fi
+    if [ -f "$BOWIE_BACKEND_DIR/.bowie-is-here" ]; then
+    echo -e "${WHITE} > Check passed: found .bowie-is-here"
+    else
+    if [[ $IGNORE_CHECKS = "yes" ]]; then
+        echo -e "${WHITE} > Check failed: failed to find .bowie-is-here in $BOWIE_BACKEND_DIR"
+        echo -e "${WHITE} > .. not exiting because overruled by IGNORE_CHECKS being set to yes"
+    else
+        echo -e "${WHITE} > Check failed: failed to find .bowie-is-here in $BOWIE_BACKEND_DIR"
+        exit 1;
+    fi
+fi
+
+if [ -d "$BOWIE_BACKEND_DIR/vendor" ]; then
+        echo -e "${WHITE} > Check passed: vendor directory detected so assuming composer has been run"
+    else
+    if [[ $IGNORE_CHECKS = "yes" ]]; then
+        echo -e "${WHITE} > Check failed: failed to find vendor directory in $BOWIE_BACKEND_DIR"
+        echo -e "${WHITE} > .. not exiting because overruled by IGNORE_CHECKS being set to yes"
+    else
+        echo -e "${WHITE} > Check failed: failed to find vendor directory in $BOWIE_BACKEND_DIR"
+        echo -e "${WHITE} > Try to run: ${CYAN}bowie-cli composer install"
+        exit 1;
+    fi
+fi
+
+echo -e "${WHITE} > Executing into docker container: ${CYAN}$1 $2 $3 $4 $5 $6 $7"
+echo
+cd $BOWIE_BACKEND_DIR && docker exec -it $BOWIE_DOCKER_CONTAINER_NAME bash -c "$1 $2 $3 $4 $5 $6 $7"
+echo
+sleep 2
+echo -e "${WHITE} > bowie-cli done"
+##### LOCAL PASS COMMAND END

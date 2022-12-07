@@ -1,0 +1,45 @@
+version: '3.1'
+services:
+  nginx:
+    image: docker.io/library/nginx:latest
+    container_name: bowie-franken-container-nginx
+    restart: always
+    volumes:
+      - ./templates:/etc/nginx/templates
+      - /Users/ryan/multipass/bowie/backend/public:/var/www/public
+      - ./nginx.franken.conf:/etc/nginx/nginx.conf
+    ports:
+      - 22777:22777
+    depends_on:
+      - franken
+  franken:
+    build: .
+    restart: always
+    container_name: bowie-franken-container-franken
+    ports:
+      - 9000:9000
+    volumes:
+      - /Users/ryan/multipass/bowie/backend:/app
+      - ./Caddyfile:/etc/Caddyfile
+    depends_on:
+      - pgsql
+      - redis
+  pgsql:
+    image: library/postgres:14.6-alpine
+    container_name: bowie-franken-container-pgsql
+    environment:
+      POSTGRES_DB: default
+      POSTGRES_USER: default
+      POSTGRES_PASSWORD: default
+    volumes:
+      - pg-franken-data:/var/lib/postgresql/data
+  redis:
+    image: library/redis:7.0.5-alpine
+    command: redis-server --maxmemory-policy volatile-ttl --loglevel warning
+    container_name: bowie-franken-container-redis
+    restart: always
+    volumes:
+      - redis-franken-data:/data
+volumes:
+  pg-franken-data:
+  redis-franken-data:

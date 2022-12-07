@@ -2,42 +2,31 @@ version: '2'
 services:
   nginx:
     image: library/nginx:1.23.2-alpine
-    container_name: default-structure-nginx
+    container_name: bowie-container-nginx
     restart: always
+    environment:
+      - NGINX_ENTRYPOINT_QUIET_LOGS=1
     volumes:
       - ./public:/var/www/public
-      - ./nginx.develop.conf:/etc/nginx/nginx.conf
+      - ./nginx.develop.conf:/etc/nginx/nginx.conf:ro
     ports:
       - 22777:22777
     depends_on:
       - app
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   app:
     build:
       context: .
-      args:
-        - COMPOSER_FLAGS=--prefer-dist --optimize-autoloader
     command: /usr/local/sbin/php-fpm
-    container_name: default-structure-app
+    container_name: bowie-container-app
     restart: always
-    user: $DOCKER_USER
-    ports:
-      - 18080:18080
-      - 9000:9000
-    environment:
-      - OPCACHE_SAVE_COMMENTS=0
-      - OPCACHE_VALIDATE_TIMESTAMPS=1
-      - OPCACHE_REVALIDATE_FREQ=0
     volumes:
-      - .:/var/www
-      - ./php.ini:/usr/local/etc/php/php.ini
-      - ./www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - .:/var/www/default:rw
     depends_on:
       - pgsql
       - redis
   pgsql:
-    image: library/postgres:14.6-alpine
-    container_name: default-structure-pgsql
+    image: docker.io/library/postgres:14.6-alpine
+    container_name: bowie-container-pgsql
     environment:
       POSTGRES_DB: default
       POSTGRES_USER: default
@@ -46,7 +35,8 @@ services:
       - pg-data:/var/lib/postgresql/data
   redis:
     image: library/redis:7.0.5-alpine
-    container_name: default-structure-redis
+    command: redis-server --maxmemory-policy volatile-ttl --loglevel warning
+    container_name: bowie-container-redis
     restart: always
     volumes:
       - redis-data:/data

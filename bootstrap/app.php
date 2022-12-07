@@ -31,10 +31,10 @@ $app->configure('app');
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
-$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
-$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+//$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+$app->register(PHPOpenSourceSaver\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
-$app->register(Spatie\CollectionMacros\CollectionMacroServiceProvider::class);
+//$app->register(Spatie\CollectionMacros\CollectionMacroServiceProvider::class);
 //$app->register(BeyondCode\LaravelWebSockets\WebSocketsServiceProvider::class);
 
 $app->router->group([
@@ -51,5 +51,6 @@ $app->configure('cache');
 $app->configure('database');
 $app->configure('broadcasting');
 $app->configure('queue');
+$app->configure('bowie');
 
 return $app;

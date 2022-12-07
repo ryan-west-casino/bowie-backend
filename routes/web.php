@@ -14,6 +14,3 @@ use Illuminate\Http\Request;
 |
 
 */
-$router->get('/', function () use ($router) {
-  return 'bowie lobby API';
-});

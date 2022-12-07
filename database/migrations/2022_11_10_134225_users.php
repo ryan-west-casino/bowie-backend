@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique()->notNullable();
             $table->string('password');
-            $table->integer('level')->default(0);
             $table->timestamps();
         });
     }

@@ -7,7 +7,7 @@ use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
@@ -19,7 +19,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'usd', 'eur', 'gbp', 'demo'
+      'name', 'email', 'usd', 'eur', 'gbp', 'demo', 'level',
     ];
     /**
      * The attributes excluded from the model's JSON form.
@@ -27,7 +27,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password', 'is_admin', 'usd', 'eur', 'gbp', 'demo'
+      'password', 'is_admin', 'usd', 'eur', 'gbp', 'demo',
     ];
 
     protected $casts = [

@@ -6,13 +6,13 @@
     "type": "project",
     "require": {
         "php": "^8.0|^8.1",
-        "flipbox/lumen-generator": "^9.1",
-        "guzzlehttp/guzzle": "^7.2",
-        "illuminate/redis": "^9.42",
-        "laravel/lumen-framework": "^9.1",
-        "predis/predis": "^2",
-        "spatie/laravel-collection-macros": "^7.0",
-        "tymon/jwt-auth": "^1.0.2"
+        "composer/composer": "^2.2",
+        "illuminate/database": "^9.0",
+        "illuminate/redis": "^9.0",
+        "illuminate/support": "*",
+        "laravel/lumen-framework": "^9.0",
+        "php-open-source-saver/jwt-auth": "^2.0",
+        "predis/predis": "^1.0"
     },
     "autoload": {
         "files": [
@@ -30,9 +30,9 @@
         ]
     },
     "config": {
-        "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "optimize-autoloader": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true
