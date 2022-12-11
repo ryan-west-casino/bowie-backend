@@ -1,0 +1,266 @@
+[
+{
+		"id": "rockpaperscissors",
+		"name": "Rock Paper Scissors",
+		"desc": "Double your money if you win, even-money on draw",
+		"type": "in-house",
+        "provider": "bowie",
+		"link": "/game/internal/rockpaperscissors",
+		"class": {
+			"meta": "\\RockPaperScissors\\RockPaperScissorsMeta",
+			"result": "\\RockPaperScissors\\RockPaperScissorsResult"
+		}
+	},
+	{
+		"id": "threeinarow",
+		"name": "Three in a Row",
+		"desc": "Get three in a row and win 12x your bet.",
+		"link": "/game/internal/threeinarow",
+        "provider": "bowie",
+		"type": "in-house",
+		"class": {
+			"meta": "\\ThreeInARow\\ThreeInARowMeta",
+			"result": "\\ThreeInARow\\ThreeInARowResult"
+		}
+	},
+ {
+    "id": "netent:starburst_r0_not_mobile_sw",
+    "name": "Starburst",
+    "type": "external",
+    "provider": "netent",
+    "desc": "External slots game.",
+    "link": "/game/external/netent:starburst_r0_not_mobile_sw",
+    "class": {
+        "init": "\\ExternalGame\\ExternalGameInit",
+        "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+},
+{
+    "id": "netent:pyramid_not_mobile_sw",
+    "name": "Pyramid: Quest for Immortality",
+    "type": "external",
+    "provider": "netent",
+    "desc": "External slots game.",
+    "link": "\/game\/external\/netent:pyramid_not_mobile_sw",
+    "class": {
+        "init": "\\ExternalGame\\ExternalGameInit",
+        "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+},
+  {
+    "id": "mascot:mermaids_bay",
+    "name": "Mermaid's Bay",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:mermaids_bay",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:merlins_tower",
+    "name": "Merlin's Tower",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:merlins_tower",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:gryphons_castle",
+    "name": "Gryphon's Castle",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:gryphons_castle",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:gemz_grow",
+    "name": "Gemz Grow",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:gemz_grow",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:3_corsairs",
+    "name": "Three Corsairs",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:3_corsairs",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:mayan_riches_rockways",
+    "name": "Mayan Riches Rockways",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:mayan_riches_rockways",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:deepsea_riches",
+    "name": "Deepsea Riches",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:deepsea_riches",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:loot_the_train",
+    "name": "Loot the Train",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:loot_the_train",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:lions_pride",
+    "name": "Lion's Pride",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:lions_pride",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:legioner",
+    "name": "Legioner",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:legioner",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:merry_scary_christmas",
+    "name": "Merry Scary Christmas!",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:merry_scary_christmas",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:pinup_dolls",
+    "name": "PinUp Dolls",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:pinup_dolls",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:zeus_the_thunderer",
+    "name": "Zeus the Thunderer",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:zeus_the_thunderer",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:the_myth",
+    "name": "The Myth",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:the_myth",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:venetian_magic",
+    "name": "Venetian Magic",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:venetian_magic",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:twin_fruits_of_santa",
+    "name": "Twin Fruits of Santa",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:twin_fruits_of_santa",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:candy_crush",
+    "name": "The Candy Crush",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:candy_crush",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  },
+  {
+    "id": "mascot:cancan_saloon",
+    "name": "CanCan Saloon",
+    "type": "external",
+    "provider": "mascot",
+    "desc": "External slots game.",
+    "link": "/game/external/mascot:cancan_saloon",
+    "class": {
+      "init": "\\ExternalGame\\ExternalGameInit",
+      "meta": "\\ExternalGame\\ExternalGameMeta"
+    }
+  }
+]

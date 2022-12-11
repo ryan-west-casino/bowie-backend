@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Controllers\Bowie\API\ResponseTrait;
+use App\Http\Controllers\Bowie\Games\GamesKernel;
 
 class AuthController extends Controller
 {
@@ -13,7 +14,8 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['register', 'login', 'logout', 'loginWithCli']]);
+        $this->middleware('auth:api', ['except' => ['register', 'login', 'logout']]);
+        $this->game_kernel = new GamesKernel;
     }
     /**
      * Get a JWT via given credentials.
@@ -61,6 +63,19 @@ class AuthController extends Controller
 
 
     /**
+    * Transfer all inplay balance (external third party) back to internal wallet database
+    *
+    * @return \Illuminate\Http\JsonResponse
+    */
+    public function transferToWallet(Request $request)
+    {
+        $this->game_kernel->transfer_to_wallet($request->currencyId);
+        $user = auth()->user();
+        $data = $this->extended_response($user);
+        return response()->json($data, 200);
+    }
+
+    /**
      * Log the user out (Invalidate the token).
      *
      * @return \Illuminate\Http\JsonResponse
@@ -87,19 +102,16 @@ class AuthController extends Controller
           'password' => 'required|string|min:8|max:255',
       ]);
       try {
-          $start_currency = config('bowie.player_options.start_currency');
           $user = new User;
           $user->name = $request->input('email');
           $user->email = $request->input('email');
           $plainPassword = $request->input('password');
-          $user->$start_currency = config('bowie.player_options.start_balance');
-          $user->cli_login_hash = app('hash')->make($plainPassword.rand(5, 500000));
+          $user->usd = config('bowie.player_options.start_balance');
           $user->password = app('hash')->make($plainPassword);
           $user->save();
-
           return response()->json(['status' => 'success', 'code' => 200, 'message' => 'Created user.'], 200);
       } catch (\Exception $e) {
-          return response()->json(['status' => 'success', 'code' => 409, 'message' => 'Registration failed.'], 409);
+          return response()->json(['status' => 'success', 'code' => 409, 'message' => 'Registration failed. ' . $e->getMessage()], 409);
       }
     }
 
@@ -126,13 +138,7 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'user' => auth()->user(),
-            'expires_in' => auth()->factory()->getTTL() * 120 + 1
+            'expires_in' => (config('jwt.ttl') * 60)
         ]);
-    }
-
-
-    protected function loginWithCli()
-    {
-        return auth()->loginUsingId("97ebedc6-cb45-420b-9cc3-d928f5709431");
     }
 }

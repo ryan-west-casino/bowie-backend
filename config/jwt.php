@@ -89,7 +89,7 @@ return [
     |
     */
 
-    'ttl' => env('JWT_TTL', 60),
+    'ttl' => env('JWT_TTL', 180),
 
     /*
     |--------------------------------------------------------------------------
@@ -108,19 +108,8 @@ return [
     |
     */
 
-    'refresh_ttl' => env('JWT_REFRESH_TTL', 20160),
+    'refresh_ttl' => env('JWT_REFRESH_TTL', 1800), // 30 hours
 
-    /*
-    |--------------------------------------------------------------------------
-    | JWT hashing algorithm
-    |--------------------------------------------------------------------------
-    |
-    | Specify the hashing algorithm that will be used to sign the token.
-    |
-    | See here: https://github.com/namshi/jose/tree/master/src/Namshi/JOSE/Signer/OpenSSL
-    | for possible values.
-    |
-    */
 
     'algo' => env('JWT_ALGO', 'HS256'),
 

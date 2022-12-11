@@ -14,3 +14,6 @@ use Illuminate\Http\Request;
 |
 
 */
+  $router->options('api/game/mock/{any:.*}', function (Request $request) {
+    return;
+  });

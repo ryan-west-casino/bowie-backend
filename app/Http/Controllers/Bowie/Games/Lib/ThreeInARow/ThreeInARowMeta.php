@@ -16,7 +16,27 @@ class ThreeInARowMeta extends BaseController
                 "desc" => "Get three in a row and win 12x your bet.",
                 "link" => "/game/internal/threeinarow",
                 "type" => "in-house",
-                "class" => "\App\Http\Controllers\Bowie\Games\Lib\ThreeInARow\ThreeInARowResult.php",
+                "class" => [
+                    "meta" => "\ThreeInARow\ThreeInARowMeta",
+                    "result" => "\ThreeInARow\ThreeInARowResult",
+                ],
+        ];
+    }
+
+    public static function init_meta()
+    {  // passed to frontend when player loads game
+        return [
+                "loader" => "direct",
+                "theme" => NULL,
+                "locales" => [
+                    "en" => [
+                            "bet_button" => "Place Bet",
+                            "gamerules_button" => "Game Rules",
+                        ],
+                ],
+                "betsizes" => [
+                    (int) 50, (int) 100, (int) 250,
+                ],
         ];
     }
 

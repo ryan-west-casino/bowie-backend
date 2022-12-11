@@ -7,7 +7,8 @@ NC='\033[0m'
 DEFAULT_COMPOSER_FLAGS='"--no-cache --prefer-dist --no-scripts --no-dev --ignore-platform-reqs -n -o"'
 DEFAULT_UP_COMMAND="docker-compose up -d"
 DEFAULT_DOWN_COMMAND="docker-compose down --remove-orphans"
-DEFAULT_FRESH_COMMAND="docker-compose down --remove-orphans --rmi all -v"
+DEFAULT_FRESH_UP_COMMAND="docker-compose up -d --force-recreate"
+DEFAULT_FRESH_DOWN_COMMAND="docker-compose down --remove-orphans --rmi all -v"
 IGNORE_CHECKS="no"
 BOWIE_CLI_CONFIG=$HOME/.bowie-cli
 echo -e "${CYAN}Bowie CLI${NC}"
@@ -190,6 +191,18 @@ if [ "$1" = "down" ]; then
     fi
 fi
 #END DOWN
+
+#FRESH
+if [ "$1" = "fresh" ]; then
+    if [ "$2" = "" ]; then
+        echo -e "${NC} Running fresh in 3 seconds..."
+        sleep 3
+        cd $BOWIE_BACKEND_DIR && $DEFAULT_FRESH_DOWN_COMMAND && $DEFAULT_FRESH_UP_COMMAND
+        echo -e "${WHITE} > completed running $DEFAULT_FRESH_DOWN_COMMAND"
+        exit 1
+    fi
+fi
+#END FRESH
 
 
 if [[ $1 = "config" ]]; then

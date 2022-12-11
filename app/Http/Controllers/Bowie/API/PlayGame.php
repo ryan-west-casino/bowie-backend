@@ -16,16 +16,17 @@ class PlayGame extends BaseController
         $this->gamekernel = new \App\Http\Controllers\Bowie\Games\GamesKernel();
         $this->list = $this->collection_loaded_games();
     }
-    
+
     public function handle(Request $request)
     {
+        $user = auth()->user();
+        $data = $this->extended_response($user);
+        return response()->json($data, 200);
+
         $list = $this->list->where('id', $request->game)->first();
         return $list;
     }
 
-    public function collection_loaded_games() {
-            return collect($this->gamekernel->loaded_games());
-    }
 
 }
 

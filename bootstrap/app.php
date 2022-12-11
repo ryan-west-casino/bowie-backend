@@ -26,6 +26,7 @@ $app->configure('app');
  $app->routeMiddleware([
      'auth' => App\Http\Middleware\Authenticate::class,
      'disableOnProduction' => App\Http\Middleware\DisableOnProduction::class,
+     'cors' => App\Http\Middleware\CorsMiddleware::class,
  ]);
 
 $app->register(App\Providers\AppServiceProvider::class);
@@ -49,8 +50,7 @@ $app->configure('jwt');
 $app->configure('auth');
 $app->configure('cache');
 $app->configure('database');
+$app->configure('bowie');
 $app->configure('broadcasting');
 $app->configure('queue');
-$app->configure('bowie');
-
 return $app;

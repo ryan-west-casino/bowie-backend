@@ -5,38 +5,29 @@ namespace App\Http\Controllers\Bowie\Games\Lib\ExternalGame;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Bowie\Games\GamesKernel;
+
 class ExternalGameInit extends BaseController
 {
+
+
     /**
-    * Create a new controller instance.
+    * Mock external game init, normally you would write your 3rd party library over here
+    * IMPORTANT: Balances on mock api are "deposited" in 3rd party balance account, this is so we don't have to process callbacks (on localhost etc)
+    * When we init the game, we "transfer" the player's balance to 3rd party database.
+    * Once game "unloads" (closed by user) or by user request in lobby it will transfer funds back into the wallet balance.
     *
     * @return void
     */
     public function __construct()
     {
-        $this->base_url = 'https://ns363376.ip-91-121-179.eu/api/createSession';
-        $this->operator_key = 'fc1e57a870d3893e8910e591058ea187';
-        $this->operator_secret = 'ad8f1481f520';
-        $this->build_create_session_url = $this->create_session_builder($this->base_url);
-        //$this->middleware('auth:api');
+        $this->api = new mock\MockThirdParty();
+        $this->game_kernel = new GamesKernel;
     }
-
-public function handle($game_id, $currency, $player)
-{
-    $s = "?game={$game_id}&player={$player}&currency=USD&operator_key={$this->operator_key}&mode=real";
-    $url = $this->base_url . $s;
-
-    return $url;
-    //return $this->create_session('wainwright', '1234', 'USD', 'real');
-}
-
-
-public function create_session_builder($base)
-{
-    $s = '?game=wainwright&player=1234&currency=USD&operator_key=&mode=real';
-}
-
-
-
+    public function handle($game, $currency)
+    {
+        $this->game_kernel->transfer_to_inplay($currency);
+        return $this->api->create_session($game, $currency);
+    }
 
 }

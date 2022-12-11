@@ -14,7 +14,7 @@ class Controller extends BaseController
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL() * 120
+            'expires_in' => (config('jwt.ttl') * 60)
         ], 200);
     }
 

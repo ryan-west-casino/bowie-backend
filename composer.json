@@ -6,13 +6,13 @@
     "type": "project",
     "require": {
         "php": "^8.0|^8.1",
-        "composer/composer": "^2.2",
-        "illuminate/database": "^9.0",
         "illuminate/redis": "^9.0",
+        "guzzlehttp/guzzle": "^7.3",
+        "illuminate/database": "^9.0",
         "illuminate/support": "*",
         "laravel/lumen-framework": "^9.0",
         "php-open-source-saver/jwt-auth": "^2.0",
-        "predis/predis": "^1.0"
+        "predis/predis": "^2"
     },
     "autoload": {
         "files": [

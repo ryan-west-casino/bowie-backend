@@ -8,12 +8,12 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('datalogger', function (Blueprint $table) {
-            $table->id('id')->index();
-            $table->string('uuid', 100);
-            $table->string('type', 100);
-            $table->json('data', 5000);
-            $table->json('extra_data', 5000);
+        Schema::create('inplay_balances', function (Blueprint $table) {
+            $table->uuid('id')->index();
+            $table->string('user_id', 300);
+            $table->string('secret', 500);
+            $table->string('currency', 15);
+            $table->integer('inplay_balance', 5000)->default(0);
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('datalogger');
+        Schema::dropIfExists('inplay_balances');
     }
 };

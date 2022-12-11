@@ -13,9 +13,9 @@ trait ResponseTrait
             $data = [
                     'code' => 200,
                     'status' => 'success',
-                    'data' => $data,
                     'user' => $this->user_builder(),
                     'balances' => $this->balances->print_all(),
+                    'data' => $data,
                     'meta' => $this->meta_builder(),
             ];
             return $data;
@@ -50,7 +50,7 @@ trait ResponseTrait
                     "usd" => array("integer" => $user->usd, "formatted" => number_format((auth()->user()->usd / 100), 2, '.', '')),
                     "eur" => array("integer" => $user->eur, "formatted" => number_format((auth()->user()->eur / 100), 2, '.', '')),
                     "gbp" => array("integer" => $user->gbp, "formatted" => number_format((auth()->user()->gbp / 100), 2, '.', '')),
-                )
+                ),
             );
         } else {
             return '[]';
